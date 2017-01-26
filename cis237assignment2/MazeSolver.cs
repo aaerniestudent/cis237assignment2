@@ -51,9 +51,58 @@ namespace cis237assignment2
         /// Feel free to change the return type if you like, or pass in parameters that you might need.
         /// This is only a very small starting point.
         /// </summary>
-        private void mazeTraversal()
+        private void mazeTraversal(char[,] maze, int x, int y)
         {
             //Implement maze traversal recursive call
+
+            //this is the finish condition
+            if (x == 0 || y == 0 || y == 11 || x == 11)
+            {
+                //finish state
+                maze[x, y] = 'X';
+                return;
+            }
+            //if it can go left
+            if (maze[x-1,y] == '.')
+            {
+                maze[x - 1, y] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x - 1, y);
+            }
+            //if it can go down
+            if (maze[x, y - 1] == '.')
+            {
+                maze[x - 1, y] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x, y - 1);
+            }
+            //if it can go right
+            if (maze[x + 1, y] == '.')
+            {
+                maze[x - 1, y] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x + 1, y);
+            }
+            //if it can go up
+            if (maze[x, y + 1] == '.')
+            {
+                maze[x - 1, y] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x, y + 1);
+            }
+            //Fail to find the exit
+            maze[x, y] = 'O';
+            return;
+        }
+
+        private void printMaze(char[,] maze)
+        {
+            
+        }
+
+        private void randomDirrection()
+        {
+
         }
     }
 }
