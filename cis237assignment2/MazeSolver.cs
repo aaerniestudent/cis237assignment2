@@ -20,6 +20,7 @@ namespace cis237assignment2
         char[,] maze;
         int xStart;
         int yStart;
+        bool solved;
 
         /// <summary>
         /// Default Constuctor to setup a new maze solver.
@@ -42,7 +43,14 @@ namespace cis237assignment2
             this.xStart = xStart;
             this.yStart = yStart;
 
-            //Do work needed to use mazeTraversal recursive call and solve the maze.
+            //the starting spot
+            this.maze[1, 1] = 'X';
+            //not solved maze
+            solved = false;
+            printMaze(this.maze);
+
+            mazeTraversal(this.maze,this.xStart,this.yStart);
+            
         }
 
 
@@ -52,57 +60,64 @@ namespace cis237assignment2
         /// This is only a very small starting point.
         /// </summary>
         private void mazeTraversal(char[,] maze, int x, int y)
-        {
-            //Implement maze traversal recursive call
+        {            
 
             //this is the finish condition
+            //if it reaches the end then it is over
             if (x == 0 || y == 0 || y == 11 || x == 11)
             {
                 //finish state
                 maze[x, y] = 'X';
+                printMaze(maze);
+                solved = true;              
                 return;
             }
             //if it can go left
-            if (maze[x-1,y] == '.')
+            if (maze[x - 1,y] == '.' & !solved)
             {
                 maze[x - 1, y] = 'X';
                 printMaze(maze);
                 mazeTraversal(maze, x - 1, y);
             }
             //if it can go down
-            if (maze[x, y - 1] == '.')
+            if (maze[x, y + 1] == '.' & !solved)
             {
-                maze[x - 1, y] = 'X';
-                printMaze(maze);
-                mazeTraversal(maze, x, y - 1);
-            }
-            //if it can go right
-            if (maze[x + 1, y] == '.')
-            {
-                maze[x - 1, y] = 'X';
-                printMaze(maze);
-                mazeTraversal(maze, x + 1, y);
-            }
-            //if it can go up
-            if (maze[x, y + 1] == '.')
-            {
-                maze[x - 1, y] = 'X';
+                maze[x, y + 1] = 'X';
                 printMaze(maze);
                 mazeTraversal(maze, x, y + 1);
             }
-            //Fail to find the exit
+            //if it can go right
+            if (maze[x + 1, y] == '.' & !solved)
+            {
+                maze[x + 1, y] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x + 1, y);
+            }
+            
+            //if it can go up
+            if (maze[x, y - 1] == '.' & !solved)
+            {
+                maze[x, y - 1] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, x, y - 1);
+            }
+            //Fail to find the exit and reach a dead end            
             maze[x, y] = 'O';
+            
             return;
         }
 
         private void printMaze(char[,] maze)
         {
-            
-        }
-
-        private void randomDirrection()
-        {
-
-        }
+            for(int i=0; i <= 11; i++)
+            {
+                for (int o=0; o<=11; o++)
+                {
+                    Console.Write(maze[i, o]);                                       
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }       
     }
 }

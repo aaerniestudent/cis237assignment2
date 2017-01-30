@@ -39,18 +39,7 @@ namespace cis237assignment2
             { '#', '.', '.', '.', '.', '.', '.', '.', '.', '#', '.', '#' },
             { '#', '#', '#', '#', '#', '#', '.', '#', '#', '#', '.', '.' },
             { '#', '.', '.', '.', '.', '.', '.', '#', '.', '.', '.', '#' },
-            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' } };
-
-            //smaller maze
-            char[,] mazetest =
-            { { '#', '#', '#', '#', '#', '#', '#'},
-            { '#', '.', '#', '.', '.', '.', '#' },
-            { '#', '.', '.', '.', '#', '#', '#' },
-            { '#', '#', '#', '.', '#', '.', '#' },
-            { '#', '.', '.', '.', '.', '.', '#' },
-            { '#', '.', '#', '.', '#', '.', '.' },
-            { '#', '#', '#', '#', '#', '#', '#' } };
-
+            { '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#' } };     
 
 
             /// <summary>
@@ -59,7 +48,7 @@ namespace cis237assignment2
             MazeSolver mazeSolver = new MazeSolver();
 
             //Create the second maze by transposing the first maze
-            char[,] maze2 = transposeMaze(maze1);
+            char[,] maze2 = transposeMaze(ref maze1);
 
             /// <summary>
             /// Tell the instance to solve the first maze with the passed maze, and start coordinates.
@@ -67,8 +56,13 @@ namespace cis237assignment2
             mazeSolver.SolveMaze(maze1, X_START, Y_START);
 
             //Solve the transposed maze.
+            //mazeSolver.SolveMaze(maze2, X_START, Y_START);
+
+            Console.ReadKey();
+
             mazeSolver.SolveMaze(maze2, X_START, Y_START);
 
+            Console.ReadKey();
         }
 
         /// <summary>
@@ -87,10 +81,20 @@ namespace cis237assignment2
         /// </summary>
         /// <param name="mazeToTranspose"></param>
         /// <returns>transposedMaze</returns>
-        static char[,] transposeMaze(char[,] mazeToTranspose)
+        static char[,] transposeMaze(ref char[,] mazeToTranspose)
         {
             //Write code her to create a transposed maze.
-            return new char[1, 1];
+            char[,] transposedMaze = new char[12,12];
+
+            for (int i = 0; i < 12; i++)
+            {
+                for (int o = 0; o < 12; o++)
+                {
+                    transposedMaze[i, o] = mazeToTranspose[o,i];
+                }
+            }
+
+            return transposedMaze;
         }
     }
 }
