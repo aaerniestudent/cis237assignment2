@@ -50,6 +50,8 @@ namespace cis237assignment2
             //Create the second maze by transposing the first maze
             char[,] maze2 = transposeMaze(ref maze1);
 
+            Console.BufferHeight = 5000;
+
             /// <summary>
             /// Tell the instance to solve the first maze with the passed maze, and start coordinates.
             /// </summary>
