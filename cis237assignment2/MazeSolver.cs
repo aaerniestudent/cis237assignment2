@@ -47,10 +47,13 @@ namespace cis237assignment2
             this.maze[1, 1] = 'X';
             //not solved maze
             solved = false;
-            printMaze(this.maze);
-
-            mazeTraversal(this.maze,this.xStart,this.yStart);
             
+            printMaze(this.maze);                      
+            
+            mazeTraversal(this.maze,this.xStart,this.yStart);
+            Console.WriteLine("The maze is solved, press any key to continue.");
+            printMaze(this.maze);
+            Console.ReadKey();
         }
 
 
@@ -64,11 +67,13 @@ namespace cis237assignment2
 
             //this is the finish condition
             //if it reaches the end then it is over
-            if (x == 0 || y == 0 || y == 11 || x == 11)
+            if (x == 0 || y == 0 
+                //any sized square maze works with this
+                || y == Math.Sqrt(maze.Length) - 1 
+                || x == Math.Sqrt(maze.Length) - 1 )
             {
                 //finish state
                 maze[x, y] = 'X';
-                printMaze(maze);
                 solved = true;              
                 return;
             }
@@ -101,10 +106,12 @@ namespace cis237assignment2
                 printMaze(maze);
                 mazeTraversal(maze, x, y - 1);
             }
-            //Fail to find the exit and reach a dead end            
-            maze[x, y] = 'O';
-            
-            return;
+            //Fail to find the exit and reach a dead end          
+            if (!solved)
+            {
+                maze[x, y] = 'O';
+                printMaze(maze);
+            }            
         }
 
         private void printMaze(char[,] maze)
