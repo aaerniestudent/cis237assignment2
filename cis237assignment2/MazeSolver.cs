@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Anthony Aernie
+//CIS237 MW 6:00
+//Feb 8, 2017
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,15 +47,19 @@ namespace cis237assignment2
             this.yStart = yStart;
 
             //the starting spot
-            this.maze[1, 1] = 'X';
-            //not solved maze
+            this.maze[yStart, xStart] = 'X';
+            //solved flag set to false
             solved = false;
-            
+            //maze with starting point
             printMaze(this.maze);                      
             
-            mazeTraversal(this.maze,this.xStart,this.yStart);
+            //start recursion, the first step
+            mazeTraversal(this.maze,this.yStart,this.xStart);
+
+            //after recursion
             Console.WriteLine("The maze is solved, press any key to continue.");
-            printMaze(this.maze);
+            //final maze print: solution is 'X', checked spaces are 'O', not checked spaces are '.'
+            printMaze(this.maze);            
             Console.ReadKey();
         }
 
@@ -62,65 +69,83 @@ namespace cis237assignment2
         /// Feel free to change the return type if you like, or pass in parameters that you might need.
         /// This is only a very small starting point.
         /// </summary>
-        private void mazeTraversal(char[,] maze, int x, int y)
+        private void mazeTraversal(char[,] maze, int y, int x)
         {            
-
-            //this is the finish condition
-            //if it reaches the end then it is over
-            if (x == 0 || y == 0 
-                //any sized square maze works with this
-                || y == Math.Sqrt(maze.Length) - 1 
-                || x == Math.Sqrt(maze.Length) - 1 )
+            //Win condition: Case that we are looking for.
+            //if it reaches the end then it is over, so the boolean solved variable is a flag
+            //the end is any edge, top, bottom, left or right
+            //any sized rectangular maze with an exit at the edge works with this
+            //top edge | left edge
+            if (y == 0 | x == 0 
+                //right edge
+                | x == maze.GetLength(1) - 1 
+                //bottom edge
+                | y == maze.GetLength(0) - 1 )
             {
-                //finish state
-                maze[x, y] = 'X';
-                solved = true;              
+                //flag so no more actions can be taken in the previous mazeTraversal
+                solved = true;
+                //returns because it doesn't need to check for dirrections, it is over.
+                //If it did check dirrections, it will create an error when it checked for a dirrection off of the map.                                             
                 return;
-            }
-            //if it can go left
-            if (maze[x - 1,y] == '.' & !solved)
+            }            
+            
+            //dirrections, none of these can occur after it is solved
+            //the first one is the only one that doesn't check the flag becuase it doesn't need to be checked, it was checked above
+            //if it can go up            
+            if (maze[y - 1,x] == '.')
             {
-                maze[x - 1, y] = 'X';
+                //all moves do the same steps in a different dirrection
+                //place an X where the move will occur
+                maze[y - 1, x] = 'X';
+                //displays the move
                 printMaze(maze);
-                mazeTraversal(maze, x - 1, y);
+                //recursive call for the move after this move
+                mazeTraversal(maze, y - 1, x);
+            }
+            //all conditions after the first move check will check to see if the win condition has been triggered, so they do not activate.
+            //if it can go right
+            if (maze[y, x + 1] == '.' & !solved)
+            {
+                maze[y, x + 1] = 'X';
+                printMaze(maze);
+                mazeTraversal(maze, y, x + 1);
             }
             //if it can go down
-            if (maze[x, y + 1] == '.' & !solved)
+            if (maze[y + 1, x] == '.' & !solved)
             {
-                maze[x, y + 1] = 'X';
+                maze[y + 1, x] = 'X';
                 printMaze(maze);
-                mazeTraversal(maze, x, y + 1);
-            }
-            //if it can go right
-            if (maze[x + 1, y] == '.' & !solved)
-            {
-                maze[x + 1, y] = 'X';
-                printMaze(maze);
-                mazeTraversal(maze, x + 1, y);
+                mazeTraversal(maze, y + 1, x);
             }
             
-            //if it can go up
-            if (maze[x, y - 1] == '.' & !solved)
+            //if it can go left
+            if (maze[y, x - 1] == '.' & !solved)
             {
-                maze[x, y - 1] = 'X';
+                maze[y, x - 1] = 'X';
                 printMaze(maze);
-                mazeTraversal(maze, x, y - 1);
+                mazeTraversal(maze, y, x - 1);
             }
-            //Fail to find the exit and reach a dead end          
+            //Fail condition: Base Case for failure to find what we are looking for
+            //Fail to find the exit or new dirrection to go. Doesn't occur after solving       
             if (!solved)
             {
-                maze[x, y] = 'O';
+                //marks a backtrack on the current space, it will return to the previous move after printing the maze
+                maze[y, x] = 'O';
                 printMaze(maze);
-            }            
+            }
+            //when it returns it will return to where it was called previously.
+            //Then it will check another dirrection or fail to find a new dirrection and act as if it has found a dead end         
         }
 
+        //displays the maze.
         private void printMaze(char[,] maze)
         {
-            for(int i=0; i <= 11; i++)
+            //works for any sized rectangle maze
+            for(int i=0; i < maze.GetLength(0); i++)
             {
-                for (int o=0; o<=11; o++)
+                for (int o=0; o < maze.GetLength(1); o++)
                 {
-                    Console.Write(maze[i, o]);                                       
+                    Console.Write(maze[i, o] + " ");                                       
                 }
                 Console.WriteLine();
             }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Anthony Aernie
+//CIS237 MW 6:00
+//Feb 8, 2017
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,21 +53,19 @@ namespace cis237assignment2
             //Create the second maze by transposing the first maze
             char[,] maze2 = transposeMaze(ref maze1);
 
-            Console.BufferHeight = 5000;
+            //this height that fits the two maze results
+            Console.BufferHeight = 1620;
 
             /// <summary>
             /// Tell the instance to solve the first maze with the passed maze, and start coordinates.
             /// </summary>
             //solving the first maze
             mazeSolver.SolveMaze(maze1, X_START, Y_START);
-
-            //first maze is solved
-            
-
+            //first maze has been solved
+                        
             //solving the second maze
             mazeSolver.SolveMaze(maze2, X_START, Y_START);
-
-            
+           
         }
 
         /// <summary>
@@ -84,12 +85,13 @@ namespace cis237assignment2
         /// <param name="mazeToTranspose"></param>
         /// <returns>transposedMaze</returns>
         static char[,] transposeMaze(ref char[,] mazeToTranspose)
-        {            
-            char[,] transposedMaze = new char[12,12];
+        {     
+            //works for any sized rectangle maze       
+            char[,] transposedMaze = new char[mazeToTranspose.GetLength(1), mazeToTranspose.GetLength(0)];
             
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < mazeToTranspose.GetLength(1); i++)
             {
-                for (int o = 0; o < 12; o++)
+                for (int o = 0; o < mazeToTranspose.GetLength(0); o++)
                 {
                     transposedMaze[i, o] = mazeToTranspose[o,i];
                 }
